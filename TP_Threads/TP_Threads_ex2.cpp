@@ -3,6 +3,7 @@
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <chrono>
 
 // calcule le Nieme terme de la suite de "Fibonacci modulo 42"
 // precondition : N >= 0
@@ -19,6 +20,13 @@ int FibonacciMod42(int N)
     return f_curr;
 }
 
+void CalculTab(std::vector<int> & tab, int nbData){
+
+  for(int i =0; i < nbData; i++){
+    tab[i] = FibonacciMod42(i);
+  }
+}
+
 int main(int argc, char ** argv)
 {
     // verifie les arguments de la ligne de commande
@@ -32,9 +40,18 @@ int main(int argc, char ** argv)
     int nbData = std::stoi(argv[1]);
     std::vector<int> data(nbData); 
 
-    // calcule le tableau de donnees 
-	// TODO
+    
+std::chrono::time_point<std::chrono::system_clock> startTime
+        = std::chrono::system_clock::now();
+       // calcule le tableau de donnees 
+    CalculTab(data, nbData);
 
+    std::chrono::time_point<std::chrono::system_clock> endTime
+        = std::chrono::system_clock::now();
+
+    std::chrono::duration<double> nbSeconds = endTime - startTime;
+
+    std::cout << "temps de calcul = " << nbSeconds.count() << std::endl;
     // ecrit les donnees calculees dans un fichier
     std::ofstream ofs("output.txt");
     for (int x : data)
